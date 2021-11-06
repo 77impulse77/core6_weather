@@ -8,7 +8,7 @@ public final class ApplicationGlobalState {
     private String selectedCity = null;
 
     // Авторизационный токен...
-//    private final String API_KEY = "kV9avv9i9oDnAjwgPuc8AhkHz2vzC7hK";
+
     private final String API_KEY = "0d1tNZJPfzzT3qGokM18FGGxAUpt7hpj";
 
     private ApplicationGlobalState() {
