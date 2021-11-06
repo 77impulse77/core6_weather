@@ -51,7 +51,7 @@ public class AccuWeatherProvider implements WeatherProvider {
             Response response = client.newCall(request).execute();
             String rawBody = response.body().string();
 
-            // Сериализуем ответ...
+            // Десериализуем ответ...
             List<WeatherResponse> weatherResponse = objectMapper.readValue(
                     rawBody,
                     new TypeReference<>() {});
