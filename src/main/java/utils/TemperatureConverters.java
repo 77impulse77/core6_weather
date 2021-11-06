@@ -1,4 +1,4 @@
-package hw7.utils;
+package utils;
 
 
 // Конвертер температур...

@@ -15,7 +15,7 @@ import enums.Periods;
 import java.io.IOException;
 import java.util.List;
 
-import static hw7.utils.TemperatureConverters.FahrenheitCelsius;
+import static utils.TemperatureConverters.FahrenheitCelsius;
 
 
 public class AccuWeatherProvider implements WeatherProvider {
