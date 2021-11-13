@@ -9,8 +9,8 @@ public final class ApplicationGlobalState {
 
     // Авторизационный токен...
 
-    private final String API_KEY = "0d1tNZJPfzzT3qGokM18FGGxAUpt7hpj";
-
+    private final String API_KEY = "VDEZsQweZSIEAdSH8gGSR4Gn7iOlibwo";
+//   0d1tNZJPfzzT3qGokM18FGGxAUpt7hpj
     private ApplicationGlobalState() {
     }
 

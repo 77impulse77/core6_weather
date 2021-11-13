@@ -11,8 +11,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import enums.Periods;
+import utils.Weather;
+import utils.dbHandler;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import static utils.TemperatureConverters.FahrenheitCelsius;
@@ -25,6 +28,13 @@ public class AccuWeatherProvider implements WeatherProvider {
     private static final String CURRENT_CONDITIONS_ENDPOINT = "currentconditions";
     private static final String API_VERSION = "v1";
     private static final String API_KEY = ApplicationGlobalState.getInstance().getApiKey();
+    private  dbHandler handler;
+    {
+        try{ handler = new dbHandler();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
     private final OkHttpClient client = new OkHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -71,6 +81,7 @@ public class AccuWeatherProvider implements WeatherProvider {
                     currentConditionResponse.getWeatherText(),
                     currentConditionResponse.getTemperature().getMetric().getValue(),
                     currentConditionResponse.getTemperature().getMetric().getUnit());
+            handler.add(ApplicationGlobalState.getInstance().getSelectedCity(), currentConditionResponse.getLocalObservationDateTime(), currentConditionResponse.getTemperature().getMetric().getValue(), currentConditionResponse.getWeatherText());
         }
     }
 
@@ -113,6 +124,7 @@ public class AccuWeatherProvider implements WeatherProvider {
                     dailyForecast.getNight().getIconPhrase(),
                     FahrenheitCelsius(temperature.getMinimum().getValue()),
                     FahrenheitCelsius(temperature.getMaximum().getValue()));
+            handler.add(ApplicationGlobalState.getInstance().getSelectedCity(), dailyForecast.getDate(), FahrenheitCelsius(temperature.getMinimum().getValue()), dailyForecast.getDay().getIconPhrase());
         }
 
         // Пустая строка для облегчения чтения...
@@ -154,5 +166,13 @@ public class AccuWeatherProvider implements WeatherProvider {
         } else throw new IOException("Server returns 0 cities");
 
         return objectMapper.readTree(jsonResponse).get(0).at("/Key").asText();
+    }
+
+    @Override
+    public void getHistory(){
+        List<Weather> listWeather = handler.getAllWeather();
+        for (Weather weather:listWeather){
+            System.out.println("В городе " + weather.city + " на дату " + weather.date + " температура " + weather.temperature + " погода " + weather.weatherText);
+        }
     }
 }
